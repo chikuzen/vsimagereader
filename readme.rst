@@ -68,9 +68,9 @@ Note:
 
 How to compile:
 ---------------
-    vsimagereader requires libpng-1.2(1.2.50 or later is recomended) and libturbojpeg.
+    vsimagereader requires libpng-1.2(1.2.50 or later is recommended) and libturbojpeg-1.2(1.2.1 or later is recommended).
 
-    And, libpng requires zlib-1.0.4 or later(1.2.7 or later is recomended).
+    And, libpng requires zlib-1.0.4 or later(1.2.7 or later is recommended).
 
     Therefore, you have to install these libraries at first.
 
