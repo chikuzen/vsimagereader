@@ -1,0 +1,16 @@
+*.dll
+*.so
+*.dylib
+*.o
+.depend
+*.py
+*.vpy
+*.avs
+*.y4m
+*.yuv
+*.raw
+*.bmp
+*.jpeg
+*.jpg
+*.png
+*.tga
