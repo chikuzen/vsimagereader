@@ -85,7 +85,7 @@ How to compile:
 
 Link:
 -----
-    vspimagereader source code repository:
+    vsimagereader source code repository:
         https://github.com/chikuzen/vsimagereader
 
     libjpeg-turbo:

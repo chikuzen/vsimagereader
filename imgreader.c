@@ -34,7 +34,7 @@
 #include "tgaread.h"
 #include "VapourSynth.h"
 
-#define VS_IMGR_VERSION "0.1.0"
+#define VS_IMGR_VERSION "0.2.0"
 #define INITIAL_SRC_BUFF_SIZE (2 * 1024 * 1024) /* 2MiByte */
 
 typedef enum {
@@ -79,15 +79,15 @@ img_get_frame(int n, int activation_reason, void **instance_data,
                                            ih->vi.height, NULL, core);
 
     VSMap *props = vsapi->getFramePropsRW(dst);
-    vsapi->propSetInt(props, "_DurationNum", ih->vi.fpsDen, 0);
-    vsapi->propSetInt(props, "_DurationDen", ih->vi.fpsNum, 0);
+    vsapi->propSetInt(props, "_DurationNum", ih->vi.fpsDen, paReplace);
+    vsapi->propSetInt(props, "_DurationDen", ih->vi.fpsNum, paReplace);
 
     ih->write_frame(ih, dst, vsapi);
 
     return dst;
 }
 
-static void close_handler(img_hnd_t *ih)
+static void VS_CC close_handler(img_hnd_t *ih)
 {
     if (!ih) {
         return;
@@ -102,6 +102,7 @@ static void close_handler(img_hnd_t *ih)
     free(ih->src_size);
     free(ih->src_files);
     free(ih);
+    ih = NULL;
 }
 
 
@@ -110,7 +111,7 @@ vs_init(VSMap *in, VSMap *out, void **instance_data, VSNode *node,
         VSCore *core, const VSAPI *vsapi)
 {
     img_hnd_t *ih = (img_hnd_t *)*instance_data;
-    vsapi->setVideoInfo(&ih->vi, node);
+    vsapi->setVideoInfo(&ih->vi, 1, node);
 }
 
 
@@ -294,11 +295,8 @@ create_reader(const VSMap *in, VSMap *out, void *user_data, VSCore *core,
     set_args_int64(&ih->vi.fpsNum, 24, "fpsnum", &va);
     set_args_int64(&ih->vi.fpsDen, 1, "fpsden", &va);
 
-    const VSNodeRef *node =
-        vsapi->createFilter(in, out, "Read", vs_init, img_get_frame, vs_close,
-                            fmSerial, 0, ih, core);
-
-    vsapi->propSetNode(out, "clip", node, 0);
+    vsapi->createFilter(in, out, "Read", vs_init, img_get_frame, vs_close,
+                        fmSerial, 0, ih, core);
 }
 
 
