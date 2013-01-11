@@ -10,6 +10,21 @@ Supported formats are
     - PNG (Portable Network Graphics)
     - TARGA (Truevision Advanced Raster Graphics Adapter)
 
+Function:
+---------
+Currently, this plugin has one function.::
+
+    imgr.Read(data[] files[, int fpsnum, int fpsden, bint alpha])
+
+files - list of the file path of the images.
+
+fpsnum - Framerate numerator. Default is 24.
+
+fpsden - Framerate denominator. Default is 1.
+
+alpha - When input image has alpha channel, this filter returns a list which has two clips. clip[0] is base clip. clip[1] is alpha clip.
+        If image does not have alpha, clip[1] will be black(all 0) frame.
+
 Usage:
 ------
     >>> import vapoursynth as vs
@@ -29,6 +44,18 @@ Usage:
     >>> dir = '/path/to/the/directory/'
     >>> srcs = [dir + src for src in os.listdir(dir) if src.endswith(ext)]
     >>> clip = core.imgr.Read(srcs)
+
+    - enable alpha:
+    >>> clip = core.imgr.Read(srcs, alpha=True)
+    >>> base = clip[0]
+    >>> alpha = clip[1]
+
+    - read variable width/height/format images
+    >>> srcs = ['320x240_bgr.bmp', '640x360_420.jpeg']
+    >>> clip = core.imgr.Read(srcs)
+    >>> clip = core.std.AddBorders(clip, right=320, bottom=120)
+    >>> clip = core.std.CropAbs(clip, width=640, height=360) # all frames are 640x360
+    >>> clip = core.resize.Bicubic(clip, format=vs.COMPATBGR32) # all frames are COMPATBGR32
 
 About supported format:
 -----------------------
@@ -50,14 +77,8 @@ About supported format:
     - PNG:
         1/2/4bits samples will be expanded to 8bits.
 
-        All alpha channel data will be stripped.
-
     - TARGA:
         Only 24bit/32bit-RGB(uncompressed or RLE compressed) are supported. Color maps are not.
-
-        All alpha channel data will be stripped.
-
-    When reading two or more images, all those width, height, and output formats need to be the same.
 
 Note:
 -----
@@ -77,7 +98,7 @@ How to compile:
     If you have already installed them, type as follows.::
 
     $ git clone git://github.com/chikuzen/vsimagereader.git
-    $ cd ./vsimagereader
+    $ cd ./vsimagereader/src
     $ ./configure
     $ make
 
