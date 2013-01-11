@@ -55,14 +55,18 @@ static int VS_CC read_png(img_hnd_t *ih, int n)
     png_init_io(p_str, fp);
     png_read_info(p_str, p_info);
 
+    png_uint_32 width, height;
     int color_type, bit_depth;
-    png_get_IHDR(p_str, p_info, NULL, NULL, &bit_depth, &color_type,
+    png_get_IHDR(p_str, p_info, &width, &height, &bit_depth, &color_type,
                  NULL, NULL, NULL);
     if (color_type & PNG_COLOR_TYPE_PALETTE) {
         png_set_palette_to_rgb(p_str);
     }
     if (bit_depth < 8) {
         png_set_packing(p_str);
+    }
+    if (bit_depth > 8) {
+        png_set_swap(p_str);
     }
     if (ih->enable_alpha == 0) {
         if (color_type & PNG_COLOR_MASK_ALPHA) {
@@ -72,7 +76,6 @@ static int VS_CC read_png(img_hnd_t *ih, int n)
         png_set_add_alpha(p_str, 0x00, PNG_FILLER_AFTER);
     }
     png_read_update_info(p_str, p_info);
-
     png_read_image(p_str, ih->png_row_index);
 
     fclose(fp);
