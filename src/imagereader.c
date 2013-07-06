@@ -158,7 +158,7 @@ check_src_props(img_hnd_t *ih, int n, vs_args_t *va)
         check_src_tga
     };
 
-    FILE *fp = fopen(ih->src[n].name, "rb");
+    FILE *fp = imgr_fopen(ih->src[n].name);
     if (!fp) {
         return "failed to open file";
     }

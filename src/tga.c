@@ -26,6 +26,7 @@
 
 
 #include <stdlib.h>
+
 #include "imagereader.h"
 
 #define TGA_HEADER_SIZE 18
@@ -214,7 +215,7 @@ static tga_retcode_t VS_CC tga_read_all_scanlines(tga_t *tga, uint8_t *buf)
 
 static int VS_CC read_tga(img_hnd_t *ih, int n)
 {
-    FILE *fp = fopen(ih->src[n].name, "rb");
+    FILE *fp = imgr_fopen(ih->src[n].name);
     if (!fp) {
         return -1;
     }

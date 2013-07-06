@@ -28,6 +28,10 @@
 
 #include <stdint.h>
 #include <stdio.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "VapourSynth.h"
 
 #define IMG_ORDER_BGR 0x0100
@@ -109,4 +113,15 @@ extern const func_write_frame func_write_rgb48;
 extern const func_write_frame func_write_rgb64;
 extern const func_write_frame func_write_palette;
 
+
+static inline FILE *imgr_fopen(const char *filename)
+{
+#ifdef _WIN32
+    wchar_t tmp[FILENAME_MAX * 2];
+    MultiByteToWideChar(CP_UTF8, 0, filename, -1, tmp, FILENAME_MAX * 2);
+    return _wfopen(tmp, L"rb");
+#else
+    return fopen(filename, "rb");
+#endif
+}
 #endif

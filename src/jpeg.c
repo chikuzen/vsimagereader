@@ -27,6 +27,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <sys/stat.h>
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 #include "turbojpeg.h"
 #include "imagereader.h"
@@ -34,7 +37,7 @@
 
 static int VS_CC read_jpeg(img_hnd_t *ih, int n)
 {
-    FILE *fp = fopen(ih->src[n].name, "rb");
+    FILE *fp = imgr_fopen(ih->src[n].name);
     if (!fp) {
         return -1;
     }
@@ -81,7 +84,13 @@ static const char * VS_CC
 check_jpeg(img_hnd_t *ih, int n, FILE *fp, vs_args_t *va)
 {
     struct stat st;
+#ifdef _WIN32
+    wchar_t tmp[FILENAME_MAX * 2];
+    MultiByteToWideChar(CP_UTF8, 0, ih->src[n].name, -1, tmp, FILENAME_MAX * 2);
+    if (wstat(tmp, &st)) {
+#else
     if (stat(ih->src[n].name, &st)) {
+#endif
         return "source file does not exist";
     }
     ih->src[n].image_size = st.st_size;

@@ -2,7 +2,7 @@
 vsimagereader - Image reader for VapourSynth
 ================================================
 
-Image file reader plugin for VapourSynth.
+Image file reader plugin for VapourSynth r19 or later.
 
 Supported formats are
     - BMP (Windows Bitmap)
@@ -22,8 +22,7 @@ fpsnum - Framerate numerator. Default is 24.
 
 fpsden - Framerate denominator. Default is 1.
 
-alpha - When input image has alpha channel, this filter returns a list which has two clips. clip[0] is base clip. clip[1] is alpha clip.
-        If image does not have alpha, clip[1] will be black(all 0) frame.
+alpha - When input image has alpha channel, this filter returns a list which has two clips. clip[0] is base clip. clip[1] is alpha clip. If image does not have alpha, clip[1] will be black(all 0) frame.
 
 Usage:
 ------
@@ -32,7 +31,7 @@ Usage:
     >>> core.std.LoadPlugin('/path/to/vsimagereader.dll')
 
     - read single file:
-    >>> clip = core.imgr.Read(['/path/to/file'])
+    >>> clip = core.imgr.Read('/path/to/file')
 
     - read two or more files:
     >>> srcs = ['/path/to/file1', '/path/to/file2', ... ,'/path/to/fileX']

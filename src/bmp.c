@@ -24,6 +24,7 @@
 
 
 #include <stdlib.h>
+
 #include "imagereader.h"
 
 #pragma pack(push, 1)
@@ -53,7 +54,8 @@ typedef struct {
 int VS_CC read_bmp(img_hnd_t *ih, int n)
 {
     bmp_header_t h;
-    FILE *fp = fopen(ih->src[n].name, "rb");
+
+    FILE *fp = imgr_fopen(ih->src[n].name);
     if (!fp) {
         return -1;
     }

@@ -33,7 +33,7 @@
 
 static int VS_CC read_png(img_hnd_t *ih, int n)
 {
-    FILE *fp = fopen(ih->src[n].name, "rb");
+    FILE *fp = imgr_fopen(ih->src[n].name);
     if (!fp) {
         return -1;
     }
