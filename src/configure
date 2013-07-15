@@ -8,6 +8,7 @@ options:
   --target-os=OS           build programs to run on OS [auto]
   --cross-prefix=PREFIX    use PREFIX for compilation tools [none]
   --sysroot=DIR            specify toolchain's directory [none]
+  --enable-new-png         use libpng-1.4 or later instead of libpng-1.2.x
   --enable-debug           compile with debug symbols and never strip
 
   --extra-cflags=XCFLAGS   add XCFLAGS to CFLAGS
@@ -47,7 +48,7 @@ LD="gcc"
 STRIP="strip"
 
 CFLAGS="-Wall -Wshadow -std=gnu99"
-LIBS="-lturbojpeg -lpng12 -lz"
+LIBS="-lturbojpeg -lpng -lz"
 
 
 for opt; do
@@ -66,6 +67,9 @@ for opt; do
         --sysroot=*)
             CFLAGS="$CFLAGS --sysroot=$optarg"
             LDFLAGS="$LDFLAGS --sysroot=$optarg"
+            ;;
+        --enable-new-png)
+            CFLAGS="$CFLAGS -DENABLE_NEW_PNG"
             ;;
         --enable-debug)
             DEBUG="enabled"
