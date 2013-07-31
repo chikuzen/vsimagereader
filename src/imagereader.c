@@ -74,11 +74,17 @@ img_get_frame(int n, int activation_reason, void **instance_data,
         return dst[0];
     }
 
+    if (vsapi->getOutputIndex(frame_ctx) == 0) {
+        vsapi->freeFrame(dst[1]);
+        return dst[0];
+    }
+
+    vsapi->freeFrame(dst[0]);
     props = vsapi->getFramePropsRW(dst[1]);
     vsapi->propSetInt(props, "_DurationNum", ih->vi[1].fpsDen, paReplace);
     vsapi->propSetInt(props, "_DurationDen", ih->vi[1].fpsNum, paReplace);
 
-    return vsapi->cloneFrameRef(dst[vsapi->getOutputIndex(frame_ctx)]);
+    return dst[1];
 }
 
 
