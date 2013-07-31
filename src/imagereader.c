@@ -33,7 +33,7 @@
 #include "imagereader.h"
 
 
-#define VS_IMGR_VERSION "0.2.0"
+#define VS_IMGR_VERSION "0.2.1"
 #define INITIAL_SRC_BUFF_SIZE (2 * 1024 * 1024) /* 2MiByte */
 
 
